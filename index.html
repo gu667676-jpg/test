@@ -3,255 +3,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إمبراطورية القنوات والمجموعات</title>
+    <title>Groups & Channels</title>
     <style>
-        /* إعدادات الألوان العامة والتصميم - Dark & Moody Theme */
+        /* إعدادات الخلفية الثابتة والمتحركة */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0b0d; /* خلفية داكنة جداً */
-            color: #f1f1f1;
+            background-color: #0a0a0a; /* أسود ملكي غامق */
+            color: #ffffff;
             margin: 0;
-            padding: 15px;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* أنيميشن الخلفية - عناصر تتحرك بلطف */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* عشان تفضل ورا الكروت */
+            pointer-events: none;
+        }
+
+        .circle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.03); /* دوائر بيضاء شفافة جداً */
+            border-radius: 50%;
+            animation: floatAround 25s infinite linear;
+        }
+
+        /* تحديد أحجام وأماكن مختلفة لعناصر الخلفية */
+        .circle:nth-child(1) { width: 150px; height: 150px; top: 10%; left: 10%; animation-duration: 20s; }
+        .circle:nth-child(2) { width: 250px; height: 250px; top: 60%; left: 80%; animation-duration: 30s; }
+        .circle:nth-child(3) { width: 100px; height: 100px; top: 40%; left: 40%; animation-duration: 15s; }
+        .circle:nth-child(4) { width: 180px; height: 180px; top: 80%; left: 20%; animation-duration: 25s; }
+
+        @keyframes floatAround {
+            0% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-40px) rotate(180deg) scale(1.1); }
+            100% { transform: translateY(0) rotate(360deg) scale(1); }
+        }
+
+        /* العنوان الرئيسي */
         h1 {
             text-align: center;
-            color: #8a2be2; /* لون بنفسجي ملكي للعنوان */
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            text-shadow: 0 2px 10px rgba(138, 43, 226, 0.3);
+            color: #ffffff; 
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-bottom: 2px solid #222;
+            display: inline-block;
+            padding-bottom: 10px;
+            left: 50%;
+            position: relative;
+            transform: translateX(-50%);
         }
 
         /* شبكة العرض: صورتين جنب بعض */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* عمودين متساويين */
-            gap: 15px; /* المسافة بين الكروت */
-            max-width: 800px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 850px;
             margin: 0 auto;
         }
 
-        /* كارت القناة */
+        /* كارت القناة - أبيض وأسود */
         .channel-card {
-            background-color: #16161a; /* رمادي غامق جداً للكارت */
-            border: 1px solid #232329;
-            border-radius: 16px;
+            background-color: #121212; /* أسود هادئ */
+            border: 1px solid #222222; /* إطار رمادي غامق */
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s, border-color 0.3s;
+            transition: all 0.3s ease;
         }
 
+        /* تأثير عند التمرير على الكارت */
         .channel-card:hover {
             transform: translateY(-5px);
-            border-color: #8a2be2; /* يضيء بالبنفسجي عند التمرير */
+            border-color: #ffffff; /* يتحول الإطار للون الأبيض */
+            box-shadow: 0 12px 30px rgba(255,255,255,0.05);
         }
 
-        /* حاوية الصورة الطولية - تم ضبطها لتطابق حجم وتناسب السكرين المرسلة تماماً */
+        /* حاوية الصورة الطولية (نفس أبعاد السكرين المرسلة) */
         .screenshot-container {
             width: 100%;
-            aspect-ratio: 9 / 19.5; /* أبعاد شاشة الموبايل الطولية بناءً على السكرين شوت */
-            background-color: #1f1f24;
+            aspect-ratio: 9 / 19.5;
+            background-color: #1a1a1a;
             overflow: hidden;
-            position: relative;
         }
 
         .screenshot-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* لملء المساحة بالكامل وبشكل متناسق */
+            object-fit: cover;
+            filter: grayscale(20%); /* لمسة سينمائية خفيفة، لو عايزها أبيض وأسود تماماً خليها 100% */
+            transition: filter 0.3s;
         }
 
-        /* تفاصيل القناة (الاسم والوصف والزر) */
+        .channel-card:hover .screenshot-container img {
+            filter: grayscale(0%); /* الألوان تنطق كاملة لما تقف بالماوس على الكارت */
+        }
+
+        /* التفاصيل */
         .channel-details {
-            padding: 12px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .channel-title {
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.15rem;
+            font-weight: 600;
             text-align: center;
             color: #ffffff;
-            margin-bottom: 4px;
         }
 
-        /* زر الوصف القابل للفتح */
+        /* زر الوصف القابل للفتح - بتصميم أبيض وأسود مباين */
         .description-toggle {
             width: 100%;
-            background-color: #22222a;
-            color: #c5c5d2;
-            border: 1px solid #2d2d37;
-            padding: 10px;
+            background-color: #1a1a1a;
+            color: #aaaaaa;
+            border: 1px solid #2a2a2a;
+            padding: 11px;
             font-size: 0.9rem;
             text-align: right;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 8px;
-            transition: background 0.3s;
+            border-radius: 6px;
+            transition: all 0.3s;
         }
 
         .description-toggle:hover {
-            background-color: #2d2d3a;
+            background-color: #222222;
             color: #ffffff;
+            border-color: #444444;
         }
 
-        /* السهم الخاص بالوصف */
         .arrow {
             transform: rotate(0deg);
             transition: transform 0.3s;
             display: inline-block;
-            font-size: 0.75rem;
-            color: #8a2be2;
+            font-size: 0.8rem;
+            color: #ffffff;
         }
 
-        /* محتوى الوصف (مخفي افتراضياً) */
+        /* محتوى الوصف المخفي */
         .description-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
-            background-color: #1a1a21;
+            background-color: #161616;
             border-radius: 4px;
         }
 
         .description-text {
             padding: 10px;
             font-size: 0.85rem;
-            line-height: 1.5;
-            color: #b5b5c3;
+            line-height: 1.6;
+            color: #cccccc;
         }
 
-        /* زر الانتقال للرابط */
+        /* زر الانتقال للرابط - تصميم ناصع وفخم */
         .action-btn {
             display: block;
             text-align: center;
-            background: linear-gradient(135deg, #ff4757, #cc2e3b); /* تدرج أحمر مميز */
-            color: white;
+            background-color: #ffffff; /* خلفية بيضاء */
+            color: #000000; /* كتابة سوداء */
             text-decoration: none;
-            padding: 10px;
+            padding: 11px;
             border-radius: 8px;
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.2);
             transition: all 0.3s;
             font-size: 0.9rem;
+            border: 1px solid #ffffff;
         }
 
         .action-btn:hover {
-            background: linear-gradient(135deg, #ff6b81, #ff4757);
-            box-shadow: 0 6px 15px rgba(255, 71, 87, 0.4);
-            transform: translateY(-1px);
+            background-color: #000000; /* يعكس الألوان عند الوقوف عليه */
+            color: #ffffff;
+            border-color: #ffffff;
         }
 
-        /* تحسين العرض على الهواتف */
+        /* الشاشات الصغيرة والموبايل */
         @media (max-width: 480px) {
-            .grid-container {
-                gap: 10px;
-                padding: 0;
-            }
-            body { padding: 8px; }
-            h1 { font-size: 1.4rem; margin-bottom: 15px; }
-            .channel-card { border-radius: 12px; }
-            .channel-details { padding: 8px; gap: 6px; }
+            .grid-container { gap: 12px; padding: 0; }
+            body { padding: 10px; }
+            h1 { font-size: 1.6rem; margin-bottom: 25px; }
+            .channel-card { border-radius: 10px; }
+            .channel-details { padding: 10px; gap: 8px; }
             .channel-title { font-size: 0.95rem; }
-            .description-toggle { padding: 8px; font-size: 0.8rem; border-radius: 6px; }
-            .action-btn { padding: 8px; font-size: 0.85rem; border-radius: 6px; }
+            .description-toggle { padding: 8px; font-size: 0.8rem; }
+            .action-btn { padding: 9px; font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
-    <h1>قنواتي ومجموعاتي المشرف عليها</h1>
+    <div class="background-animation">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <h1>Groups & Channels</h1>
 
     <div class="grid-container">
 
         <div class="channel-card">
-            <div class="screenshot-container">
-                <img src="1.png" alt="شاشة القناة 1">
-            </div>
+            <div class="screenshot-container"><img src="1.png" alt="شاشة القناة 1"></div>
             <div class="channel-details">
                 <div class="channel-title">اسم القناة 1 هنا</div>
-                <button class="description-toggle" onclick="toggleDescription(this)">
-                    <span>الوصف</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="description-content">
-                    <div class="description-text">اكتب الوصف هنا</div>
-                </div>
+                <button class="description-toggle" onclick="toggleDescription(this)"><span>الوصف</span><span class="arrow">▼</span></button>
+                <div class="description-content"><div class="description-text">اكتب الوصف هنا</div></div>
                 <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
             </div>
         </div>
 
         <div class="channel-card">
-            <div class="screenshot-container">
-                <img src="2.png" alt="شاشة القناة 2">
-            </div>
+            <div class="screenshot-container"><img src="2.png" alt="شاشة القناة 2"></div>
             <div class="channel-details">
                 <div class="channel-title">اسم القناة 2 هنا</div>
-                <button class="description-toggle" onclick="toggleDescription(this)">
-                    <span>الوصف</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="description-content">
-                    <div class="description-text">اكتب الوصف هنا</div>
-                </div>
+                <button class="description-toggle" onclick="toggleDescription(this)"><span>الوصف</span><span class="arrow">▼</span></button>
+                <div class="description-content"><div class="description-text">اكتب الوصف هنا</div></div>
                 <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
             </div>
         </div>
 
         <div class="channel-card">
-            <div class="screenshot-container">
-                <img src="3.png" alt="شاشة القناة 3">
-            </div>
+            <div class="screenshot-container"><img src="3.png" alt="شاشة القناة 3"></div>
             <div class="channel-details">
                 <div class="channel-title">اسم القناة 3 هنا</div>
-                <button class="description-toggle" onclick="toggleDescription(this)">
-                    <span>الوصف</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="description-content">
-                    <div class="description-text">اكتب الوصف هنا</div>
-                </div>
+                <button class="description-toggle" onclick="toggleDescription(this)"><span>الوصف</span><span class="arrow">▼</span></button>
+                <div class="description-content"><div class="description-text">اكتب الوصف هنا</div></div>
                 <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
             </div>
         </div>
 
         <div class="channel-card">
-            <div class="screenshot-container">
-                <img src="4.png" alt="شاشة القناة 4">
-            </div>
+            <div class="screenshot-container"><img src="4.png" alt="شاشة القناة 4"></div>
             <div class="channel-details">
                 <div class="channel-title">اسم القناة 4 هنا</div>
-                <button class="description-toggle" onclick="toggleDescription(this)">
-                    <span>الوصف</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="description-content">
-                    <div class="description-text">اكتب الوصف هنا</div>
-                </div>
+                <button class="description-toggle" onclick="toggleDescription(this)"><span>الوصف</span><span class="arrow">▼</span></button>
+                <div class="description-content"><div class="description-text">اكتب الوصف هنا</div></div>
                 <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
             </div>
         </div>
 
         <div class="channel-card">
-            <div class="screenshot-container">
-                <img src="5.png" alt="شاشة القناة 5">
-            </div>
+            <div class="screenshot-container"><img src="5.png" alt="شاشة القناة 5"></div>
             <div class="channel-details">
                 <div class="channel-title">اسم القناة 5 هنا</div>
-                <button class="description-toggle" onclick="toggleDescription(this)">
-                    <span>الوصف</span>
-                    <span class="arrow">▼</span>
-                </button>
-                <div class="description-content">
-                    <div class="description-text">اكتب الوصف هنا</div>
-                </div>
+                <button class="description-toggle" onclick="toggleDescription(this)"><span>الوصف</span><span class="arrow">▼</span></button>
+                <div class="description-content"><div class="description-text">اكتب الوصف هنا</div></div>
                 <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
             </div>
         </div>
 
-        <div class="
+        <div class="channel-card">
+            <div class="screenshot-container"><img src="6.png" alt="شاشة القناة 6"></div>
+            <div class="channel-details">
+                <div class="channel-title">اسم القناة 6 هنا</div>
+                <button class="description-toggle" onclick="toggleDescription(this)"><span>الوصف</span><span class="arrow">▼</span></button>
+                <div class="description-content"><div class="description-text">اكتب الوصف هنا</div></div>
+                <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // دالة الأكورديون لفتح وإغلاق الوصف بسلاسة
+        function toggleDescription(button) {
+            button.classList.toggle("active");
+            const arrow = button.querySelector(".arrow");
+            
+            if (button.classList.contains("active")) {
+                arrow.style.transform = "rotate(180deg)";
+            } else {
+                arrow.style.transform = "rotate(0deg)";
+            }
+
+            const content = button.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+    </script>
+</body>
+</html>
