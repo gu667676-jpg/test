@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إمبراطورية القنوات والمجموعات</title>
+    <style>
+        /* إعدادات الألوان العامة والتصميم - Dark & Moody Theme */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0b0d; /* خلفية داكنة جداً */
+            color: #f1f1f1;
+            margin: 0;
+            padding: 15px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8a2be2; /* لون بنفسجي ملكي للعنوان */
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 10px rgba(138, 43, 226, 0.3);
+        }
+
+        /* شبكة العرض: صورتين جنب بعض */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* عمودين متساويين */
+            gap: 15px; /* المسافة بين الكروت */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* كارت القناة */
+        .channel-card {
+            background-color: #16161a; /* رمادي غامق جداً للكارت */
+            border: 1px solid #232329;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-5px);
+            border-color: #8a2be2; /* يضيء بالبنفسجي عند التمرير */
+        }
+
+        /* حاوية الصورة الطولية - تم ضبطها لتطابق حجم وتناسب السكرين المرسلة تماماً */
+        .screenshot-container {
+            width: 100%;
+            aspect-ratio: 9 / 19.5; /* أبعاد شاشة الموبايل الطولية بناءً على السكرين شوت */
+            background-color: #1f1f24;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screenshot-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* لملء المساحة بالكامل وبشكل متناسق */
+        }
+
+        /* تفاصيل القناة (الاسم والوصف والزر) */
+        .channel-details {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .channel-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        /* زر الوصف القابل للفتح */
+        .description-toggle {
+            width: 100%;
+            background-color: #22222a;
+            color: #c5c5d2;
+            border: 1px solid #2d2d37;
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: right;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .description-toggle:hover {
+            background-color: #2d2d3a;
+            color: #ffffff;
+        }
+
+        /* السهم الخاص بالوصف */
+        .arrow {
+            transform: rotate(0deg);
+            transition: transform 0.3s;
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #8a2be2;
+        }
+
+        /* محتوى الوصف (مخفي افتراضياً) */
+        .description-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #1a1a21;
+            border-radius: 4px;
+        }
+
+        .description-text {
+            padding: 10px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #b5b5c3;
+        }
+
+        /* زر الانتقال للرابط */
+        .action-btn {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #ff4757, #cc2e3b); /* تدرج أحمر مميز */
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.2);
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #ff6b81, #ff4757);
+            box-shadow: 0 6px 15px rgba(255, 71, 87, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* تحسين العرض على الهواتف */
+        @media (max-width: 480px) {
+            .grid-container {
+                gap: 10px;
+                padding: 0;
+            }
+            body { padding: 8px; }
+            h1 { font-size: 1.4rem; margin-bottom: 15px; }
+            .channel-card { border-radius: 12px; }
+            .channel-details { padding: 8px; gap: 6px; }
+            .channel-title { font-size: 0.95rem; }
+            .description-toggle { padding: 8px; font-size: 0.8rem; border-radius: 6px; }
+            .action-btn { padding: 8px; font-size: 0.85rem; border-radius: 6px; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>قنواتي ومجموعاتي المشرف عليها</h1>
+
+    <div class="grid-container">
+
+        <div class="channel-card">
+            <div class="screenshot-container">
+                <img src="1.png" alt="شاشة القناة 1">
+            </div>
+            <div class="channel-details">
+                <div class="channel-title">اسم القناة 1 هنا</div>
+                <button class="description-toggle" onclick="toggleDescription(this)">
+                    <span>الوصف</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="description-content">
+                    <div class="description-text">اكتب الوصف هنا</div>
+                </div>
+                <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
+            </div>
+        </div>
+
+        <div class="channel-card">
+            <div class="screenshot-container">
+                <img src="2.png" alt="شاشة القناة 2">
+            </div>
+            <div class="channel-details">
+                <div class="channel-title">اسم القناة 2 هنا</div>
+                <button class="description-toggle" onclick="toggleDescription(this)">
+                    <span>الوصف</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="description-content">
+                    <div class="description-text">اكتب الوصف هنا</div>
+                </div>
+                <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
+            </div>
+        </div>
+
+        <div class="channel-card">
+            <div class="screenshot-container">
+                <img src="3.png" alt="شاشة القناة 3">
+            </div>
+            <div class="channel-details">
+                <div class="channel-title">اسم القناة 3 هنا</div>
+                <button class="description-toggle" onclick="toggleDescription(this)">
+                    <span>الوصف</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="description-content">
+                    <div class="description-text">اكتب الوصف هنا</div>
+                </div>
+                <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
+            </div>
+        </div>
+
+        <div class="channel-card">
+            <div class="screenshot-container">
+                <img src="4.png" alt="شاشة القناة 4">
+            </div>
+            <div class="channel-details">
+                <div class="channel-title">اسم القناة 4 هنا</div>
+                <button class="description-toggle" onclick="toggleDescription(this)">
+                    <span>الوصف</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="description-content">
+                    <div class="description-text">اكتب الوصف هنا</div>
+                </div>
+                <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
+            </div>
+        </div>
+
+        <div class="channel-card">
+            <div class="screenshot-container">
+                <img src="5.png" alt="شاشة القناة 5">
+            </div>
+            <div class="channel-details">
+                <div class="channel-title">اسم القناة 5 هنا</div>
+                <button class="description-toggle" onclick="toggleDescription(this)">
+                    <span>الوصف</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div class="description-content">
+                    <div class="description-text">اكتب الوصف هنا</div>
+                </div>
+                <a href="#" target="_blank" class="action-btn">دخول الرابط</a>
+            </div>
+        </div>
+
+        <div class="
